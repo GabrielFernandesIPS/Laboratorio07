@@ -31,7 +31,6 @@ public class BagOfWords   {
      * Nome do bag of words
      */
     private String name;
-    private final IntegerProperty wordCount = new SimpleIntegerProperty();
 
     public BagOfWords(String name) {
         this.name = name;
