@@ -9,7 +9,7 @@
 
 ## 🎯 **Objetivos**
 - Compreender e aplicar o **padrão Observer**.
-- Separar as responsabilidades entre **modelo** e **vista**.
+- Separar as responsabilidades entre **modelo** (M-Model) e **vista** (V-View).
 - Fazer com que a interface gráfica (JavaFX) se **atualize automaticamente** quando o modelo muda.
 - Adicionar uma **vista em modo consola** que também observe o mesmo modelo.
 
