@@ -1,35 +1,96 @@
 # Advanced Programming | Lab7
 
-## Objectives
-- Introduction to the MVC pattern using JavaFX for the GUI;
-- Simple algorithms with graphs.
+# 💻 Laboratory Exercise — *Observer* Pattern
+## Topic: *Bag of Words*
 
-## 1 - Introduction
+---
 
-### Java Patterns - Model View Controller
+## 🎯 **Objectives**
+- Understand and apply the **Observer pattern**.
+- Separate responsibilities between **Model** and **View**.
+- Make the graphical interface (JavaFX) **automatically update** when the model changes.
+- Add a **console view** that also observes the same model.
 
-This repository contains the code to create the following application:
+---
 
-![Figure 1 - Application output](images/application.png)
+## 🧩 **Base Code**
 
-Figure 1 - Application output
+The provided code is organized as follows:
 
-The application is designed according to the MVC pattern:
+```
+MV/
+  Main.java
+  FactoryMVBag.java
+  model/
+    BagOfWords.java
+    BagOfWordsException.java
+  view/
+    BagOfWordsView.java
+observer/
+  Observer.java
+  Subject.java
+  Observable.java
+```
 
-![Figure 2 - Model View Controller Pattern](images/app_mvc.png)
+The application already provides a simple interface to manage a list of words (*bag of words*).
 
-Figure 2 - Model View Controller Pattern
+---
 
-## 2 - Exercises
+## 🧠 **Exercise 1 — Applying the Observer Pattern**
 
-1. Fill in the code so that the "Statistics" information is filled in correctly.
+### 🪜 Steps
 
-2. Complete the public void clearControls() method, which should "clear" the controls: textfields and comboxes
+1. **Study the provided code**
+    - Run the application and observe its current behaviour.
+    - Identify the main classes:
+        - `BagOfWords` → represents the **model** (stores the list of words);
+        - `BagOfWordsView` → represents the **graphical view** (JavaFX);
+        - `observer` → contains the generic interfaces for the *Observer* pattern.
 
-3. Provide the code that allows you to add a new Person to the network. Review the setTriggers methods in the view and doAddPerson in the controller.
+2. **Apply the Observer pattern**
+    - Make `BagOfWords` act as a **Subject**.
+    - Make `BagOfWordsView` act as an **Observer**.
+    - Register the view in the model (`model.addObservers(this)`).
+    - Ensure that whenever the model changes (add, remove, or clear words), the view is notified and updates:
+        - the list (`ListView`);
+        - and the word counter (`Label`).
 
-4. Implement functionality to remove a person from the network. You need to add the functionality to the model, controller and view.
+3. **Verify the behaviour**
+    - When adding, removing, or clearing words, the interface must update automatically — **without** manually updating the UI outside the `update(...)` method.
 
-5. Implement the necessary code to add information about the list of people isolated on the network to the statistics panel. If this list is empty, the following information should appear: “No isolated Person”
+---
 
-**Note**: You must create a new method in UniversityNetwork that returns the list of isolated people
+## 🖥️ **Exercise 2 — Console View**
+
+### 1️⃣ Create a new class `BagOfWordsConsoleView`
+- This class will be a **second view**, in text mode.
+- It must **implement** the `Observer` interface.
+- In the constructor, register it with the model:
+  ```java
+  model.addObservers(this);
+  ```
+
+### 2️⃣ In the `update(Object obj)` method
+- Print in the console the type of change and the current content of the bag.  
+  Example output:
+  ```
+  [CLI] ADDED 'test' (size=4)
+  Current content: [one, two, three, test]
+  ```
+
+### 3️⃣ Register the console view
+- In `FactoryMVPBag.java`, after creating the model and the graphical view, add:
+  ```java
+  BagOfWordsConsoleView consoleView = new BagOfWordsConsoleView(model);
+  ```
+
+Now, whenever you interact with the graphical interface (add, remove, clear), you should also see updates printed in the console.
+
+---
+
+## ✅ **Expected Results**
+- Both the graphical and console views always reflect the **current state** of the model.
+- The model **automatically notifies** all observers when it changes.
+- The *Observer* pattern is correctly applied, without direct dependencies between model and views.
+
+---

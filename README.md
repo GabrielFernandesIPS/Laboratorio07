@@ -2,36 +2,97 @@
 
 :gb: [English version](README_EN.md)
 
-## Objectivos
-- Introdução ao padrão MVC utilizando JavaFX para a GUI;
-- Algoritmos simples com grafos.
+# 💻 Trabalho de Laboratório — Padrão *Observer*
+## Tema: *Bag of Words* (Bolsa de Palavras)
 
-## 1 - Introdução
+---
 
-### Java Patterns - Model View Controller
+## 🎯 **Objetivos**
+- Compreender e aplicar o **padrão Observer**.
+- Separar as responsabilidades entre **modelo** e **vista**.
+- Fazer com que a interface gráfica (JavaFX) se **atualize automaticamente** quando o modelo muda.
+- Adicionar uma **vista em modo consola** que também observe o mesmo modelo.
 
-Este repositório contém o código para criar a seguinte aplicação:
+---
 
-![Figura 1 - Output da aplicação](images/application.png)
+## 🧩 **Código Base**
 
-Figura 1 - Output da aplicação
+O código fornecido encontra-se organizado da seguinte forma:
 
-A aplicação foi concebida de acordo com o padrão MVC:
+```
+MV/
+  Main.java
+  FactoryMVBag.java
+  model/
+    BagOfWords.java
+    BagOfWordsException.java
+  view/
+    BagOfWordsView.java
+observer/
+  Observer.java
+  Subject.java
+  Observable.java
+```
 
-![Figura 2 - Padrão Model View Controller](images/app_mvc.png)
+A aplicação já cria uma interface simples para gerir uma lista de palavras (*bag of words*).
 
-Figura 2 - Padrão Model View Controller
+---
 
-## 2 - Exercícios
+##  **Exercício 1 — Aplicação do padrão Observer**
 
-1. Preencher o código para que a informação "Statistics" seja preenchida corretamente.
+### 🪜 Passos a realizar
 
-2. Completar o método public void clearControls() que deverá "limpar" os controlos: textfields e comboxs
+1. **Estuda o código fornecido**
+    - Executa a aplicação e observa o seu comportamento atual.
+    - Identifica as classes principais:
+        - `BagOfWords` → representa o **modelo** (contém a lista de palavras);
+        - `BagOfWordsView` → representa a **vista gráfica** (JavaFX);
+        - `observer` → contém as interfaces genéricas do padrão *Observer*.
 
-3. Fornecer o código que permite adicionar uma nova Pessoa à rede. Rever os métodos setTriggers na view e doAddPerson no controller.
+2. **Aplica o padrão Observer**
+    - Faz com que `BagOfWords` seja um **Subject**.
+    - Faz com que `BagOfWordsView` seja um **Observer**.
+    - Regista a vista no modelo (`model.addObservers(this)`).
+    - Garante que, sempre que o modelo muda (adicionar, remover ou limpar palavras), a vista é notificada e atualiza:
+        - a lista (`ListView`);
+        - e o contador de palavras (`Label`).
 
-4. Implementar a funcionalidade para remover uma pessoa da rede. É necessário adicionar a funcionalidade ao model, ao controler e à view.
+3. **Verifica o comportamento**
+    - Ao adicionar, remover ou limpar palavras, a interface deve atualizar-se automaticamente — **sem** precisar de atualizar manualmente a UI fora do método `update(...)`.
 
-5. Implementar o código necessário para adicionar ao painel de estatísticas informações sobre a lista de pessoas isoladas na rede. No caso de esta lista estar vazia deve aparecer a informação: “No isolated Person”
+---
 
-**Nota**: Deve criar um novo método em UniversityNetwork que devolva a lista de pessoas isoladas
+## 🖥️ **Exercício 2 — Vista em modo consola**
+
+### 1️⃣ Cria uma nova classe `BagOfWordsConsoleView`
+- Esta classe será uma **segunda vista**, em modo texto.
+- Deve **implementar** a interface `Observer`.
+- No construtor, regista-se no modelo:
+  ```java
+  model.addObservers(this);
+  ```
+
+### 2️⃣ No método `update(Object obj)`
+- Mostra no terminal o tipo de alteração ocorrida e o estado atual da “bag”.  
+  Exemplo de saída:
+  ```
+  [CLI] ADDED 'teste' (size=4)
+  Conteúdo atual: [um, dois, três, teste]
+  ```
+
+### 3️⃣ Regista a vista de consola
+- Em `FactoryMVPBag.java`, depois de criar o modelo e a vista gráfica, adiciona:
+  ```java
+  BagOfWordsConsoleView consoleView = new BagOfWordsConsoleView(model);
+  ```
+
+Agora, sempre que interagires com a interface gráfica (adicionar, remover, limpar), verás também as atualizações no terminal.
+
+---
+
+## ✅ **Objetivos a alcançar**
+- A vista gráfica e a vista de consola refletem sempre o **estado atual** do modelo.
+- O modelo **notifica automaticamente** os observadores sempre que muda.
+- O padrão *Observer* está corretamente aplicado, sem dependências diretas entre modelo e vistas.
+
+
