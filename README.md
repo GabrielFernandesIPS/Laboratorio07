@@ -22,7 +22,7 @@ O código fornecido encontra-se organizado da seguinte forma:
 ```
 MV/
   Main.java
-  FactoryMVBag.java
+  FactoryMVBagGUI.java
   model/
     BagOfWords.java
     BagOfWordsException.java
@@ -43,23 +43,26 @@ A aplicação já cria uma interface simples para gerir uma lista de palavras (*
 ###  Passos a realizar
 
 1. **Estuda o código fornecido**
-    - Executa a aplicação e observa o seu comportamento atual. Constata que as ações nos botões não tem o comportamento esperado, já que aparece modificado na GUI.
+    - Executa a aplicação e observa o seu comportamento atual. 
+    - Executa a aplicação e observa o seu comportamento atual.
+      Verifica que, ao interagir com os botões, nenhuma atualização é refletida na interface gráfica — as ações parecem não ter efeito, pois a lista e o contador permanecem inalterados.
     - Identifica as componentes principais:
         - `BagOfWords` → representa o **modelo** (contém a lista de palavras);
         - `BagOfWordsGUI` → representa a **vista gráfica** (JavaFX);
-        - pacote `observer` → contém as interfaces genéricas do padrão *Observer*.
+        -  pacote `observer` contém as interfaces genéricas do padrão *Observer*.
+        - a classe `FactoryMVBagGUI` que impleemnta um método de criação, responsavel por ligar a view ao modelo.
 
-2. **Aplica o padrão Observer**: Pretende-se aplicar o padrão Observer de forma obter o comportamento esperado, quando se pressiona um dos botões ( adicionar palavra à lista de palavras, ou remove-las)
+2. **Aplica o padrão Observer**: Pretende-se aplicar o padrão Observer de forma obter o comportamento esperado, quando se pressiona um dos botões ( adicionar palavra à lista de palavras, limpar a lista)
    
     - Faz com que `BagOfWords` seja um **Subject**.
     - Faz com que `BagOfWordsGUI` seja um **Observer**.
-    - Regista a vista no modelo (`model.addObservers(this)`).
-    - Garante que, sempre que o modelo muda (adicionar, remover ou limpar palavras), a vista é notificada e atualiza:
+    - Regista a vista no modelo (`model.addObservers(this)`), no método create da classe `FactoryMVBagGUI`.
+    - Garante que, sempre que o modelo muda (adicionar, ou limpar palavras), a vista é notificada e atualiza:
         - a lista (`ListView`);
         - e o contador de palavras (`Label`).
 
 4. **Verifica o comportamento**
-    - Ao adicionar, remover ou limpar palavras, a interface deve atualizar-se automaticamente — **sem** precisar de atualizar manualmente a UI fora do método `update(...)`.
+    - Ao adicionar, ou limpar palavras, a interface deve atualizar-se automaticamente — **sem** precisar de atualizar manualmente a UI fora do método `update(...)`.
 
 ---
 
@@ -68,10 +71,6 @@ A aplicação já cria uma interface simples para gerir uma lista de palavras (*
 ### 1 Cria uma nova classe `BagOfWordsConsoleView`
 - Esta classe será uma **segunda vista**, em modo texto.
 - Deve **implementar** a interface `Observer`.
-- No construtor, regista-se no modelo:
-  ```java
-  model.addObservers(this);
-  ```
 
 ### 2 No método `update(Object obj)`
 - Mostra no terminal o tipo de alteração ocorrida e o estado atual da “bag”.  
@@ -81,11 +80,9 @@ A aplicação já cria uma interface simples para gerir uma lista de palavras (*
   Conteúdo atual: [um, dois, três, teste]
   ```
 
-### 3 Regista a vista de consola
-- Em `FactoryMVPBag.java`, depois de criar o modelo e a vista gráfica, adiciona:
-  ```java
-  BagOfWordsConsoleView consoleView = new BagOfWordsConsoleView(model);
-  ```
+### 3 Cria uma nova fabrica 
+- Cria uma classe `FactoryMVPBagConsole.java`, que recebe o modelo e cria uma vista do tipo consola e regista-a como observador.
+
 
 Agora, sempre que interagires com a interface gráfica (adicionar, limpar), verás também as atualizações no terminal.
 
