@@ -5,6 +5,7 @@ package MV;/*
  */
 
 import MV.model.BagOfWords;
+import MV.view.BagOfWordsConsoleView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         BagOfWords model = new BagOfWords("Nicole");
         Scene scene = FactoryMVBagGUI.create(model).getScene();
-
+        FactoryMVPBagConsole.create(model);
         primaryStage.setTitle("Bag Of Words");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -29,6 +30,7 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+
     }
 
 }

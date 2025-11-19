@@ -26,7 +26,7 @@ import java.util.Iterator;
  *
  * @author Utilizador
  */
-public class BagOfWordsGUI {
+public class BagOfWordsGUI implements Observer {
     
     private Button btnAdd, btnUndo;
     private ListView listWords;
@@ -82,6 +82,11 @@ public class BagOfWordsGUI {
          this.wordInput.setText("");        
     }
 
+    @Override
+    public void update(Object obj) {
+        updateAll(model.getWordCount(), model.getWords().iterator());
+    }
+
 
     public void doAdd(String text) {
         if (!text.isEmpty()) {
@@ -93,15 +98,12 @@ public class BagOfWordsGUI {
                this.wordInput.setText("");
            }
         }
-
+        update(this);
     }
 
     private void doRemoveAll() {
-
-           model.removeAll();
-
-
-       }
+       model.removeAll();
+    }
 
 
 
@@ -111,4 +113,6 @@ public class BagOfWordsGUI {
         alert.setContentText(message);
         alert.showAndWait(); // bloqueia até o utilizador fechar
     }
+
+
 }

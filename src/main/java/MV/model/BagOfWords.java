@@ -7,6 +7,7 @@ package MV.model;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import observer.Subject;
 
 
 import java.util.ArrayList;
@@ -20,7 +21,13 @@ import java.util.List;
  *
  * @author brunomnsilva
  */
-public class BagOfWords   {
+public class BagOfWords extends Subject{
+
+    public enum UpdateKeyWord{
+        ADDED,
+        REMOVEDALL,
+        REMOVED
+    }
 
     /**
      * Colecao que guarda as palavras
@@ -46,12 +53,12 @@ public class BagOfWords   {
         }
 
         bag.add(s);
-
+        notifyObservers(UpdateKeyWord.ADDED);
 
     }
     public void removeAll(){
         bag.clear();
-
+        notifyObservers(UpdateKeyWord.REMOVEDALL);
     }
 
     public int getWordCount() {

@@ -7,6 +7,7 @@ package MV;/*
 
 import MV.model.BagOfWords;
 import MV.view.BagOfWordsGUI;
+import observer.Observer;
 
 /**
  *
@@ -17,8 +18,8 @@ public class FactoryMVBagGUI {
     public static BagOfWordsGUI create(BagOfWords model) {
 
         BagOfWordsGUI viewG = new BagOfWordsGUI(model);
-
-
+        model.addObservers(viewG);
         return viewG;
     }
+
 }
